@@ -90,8 +90,8 @@ export default function Sizes() {
                 key={key}
                 variant="outlined"
                 label={option.title}
-                size="small"   ///asd
-                {...itemProps}
+                size="small"   
+                {...itemProps} //sdfsdfsf
               />
             );
           })
