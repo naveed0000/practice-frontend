@@ -1,15 +1,31 @@
 "use client";
-
-import { Button, Grid, InputAdornment, InputLabel, TextField, TextFieldProps, Typography } from "@mui/material";
+import { DevTool } from "@hookform/devtools";
+import {
+  Button,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  TextField,
+  TextFieldProps,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import resumeSchema, { resumeSchemaType, workExperienceSchemaType } from "./resumeSchema";
+import resumeSchema, {
+  resumeSchemaType,
+  workExperienceSchemaType,
+} from "./resumeSchema";
 import SimpleTextField from "../GlobalComponent/SimpleTextField";
-import { CalendarIcon, DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import {
+  CalendarIcon,
+  DateField,
+  DatePicker,
+  DateTimePicker,
+} from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-// Example: value from form (string | null)
-let valueFromForm: string | null = null; // assume form value is empty initially
+import RHFDateTimePicker from "./RHFDateTimePicker";
+import RHFDateField from "./RHFDateField";
 export default function ResumeForm() {
   const [openDate, setOpenDate] = useState<boolean>(false);
   // const [date, setDate] = React.useState<Dayjs | null>(dayjs()); // default today
@@ -19,39 +35,41 @@ export default function ResumeForm() {
     unregister,
     formState: { errors },
     getFieldState,
-    setValue, 
+    setValue,
     trigger,
     watch,
-    control
+    control,
   } = useForm<resumeSchemaType>({
     defaultValues: {
       candidateName: "",
       candidateEmail: "",
       candidatePhone: "",
-      careerObjective: "", 
-      workExperience: [ 
-        { 
-          company: '', 
-          title: '',
-          description: '',
-          startDate: null, 
-        }
-      ]
+      careerObjective: "",
+      workExperience: [
+        {
+          company: "",
+          title: "",
+          description: "",
+          startDate: "",
+          endDate: "",
+        },
+      ],
     },
     resolver: zodResolver(resumeSchema),
   });
-  const { fields, append,remove } = useFieldArray<resumeSchemaType>({
-    name : 'workExperience', 
-    control
-  })
-    
-    console.log('fields: ', fields);
+  const { fields, append, remove } = useFieldArray<resumeSchemaType>({
+    name: "workExperience",
+    control,
+  });
+
+  // console.log("fields: ", fields);
+
   // useEffect(() => {
   //   register("candidateName");
   // }, [register]);
 
   // console.log(errors, "errors");
-  // console.log(watch());
+  // console.log("watch form values ", watch("workExperience.0.endDate"));
   // console.log(getFieldState("candidateName"), "getFieldState");
 
   const onSubmit = (data: resumeSchemaType) => {
@@ -67,28 +85,58 @@ export default function ResumeForm() {
       sx={{ padding: "20px" }}
     >
       <Grid size={4}>
-        <SimpleTextField control={control} name='candidateName' sx={{ width: 1}} variant="outlined" inputlabel="candidate Name"/>
+        <SimpleTextField
+          control={control}
+          name="candidateName"
+          sx={{ width: 1 }}
+          variant="outlined"
+          inputlabel="candidate Name"
+        />
       </Grid>
       <Grid size={4}>
-        
-        <SimpleTextField control={control} name='candidateEmail' sx={{ width: 1}} variant="outlined" inputlabel="candidate Email"/>
+        <SimpleTextField
+          control={control}
+          name="candidateEmail"
+          sx={{ width: 1 }}
+          variant="outlined"
+          inputlabel="candidate Email"
+        />
       </Grid>
       <Grid size={4}>
-        
-        <SimpleTextField control={control} name='candidatePhone' sx={{ width: 1}} variant="outlined" inputlabel="candidate Phone"/>
+        <SimpleTextField
+          control={control}
+          name="candidatePhone"
+          sx={{ width: 1 }}
+          variant="outlined"
+          inputlabel="candidate Phone"
+        />
       </Grid>
 
       <Grid size={12}>
-        <SimpleTextField control={control} name='careerObjective' sx={{ width: 1}} variant="outlined" inputlabel="Career Objective" multiline rows={4}/>
+        <SimpleTextField
+          control={control}
+          name="careerObjective"
+          sx={{ width: 1 }}
+          variant="outlined"
+          inputlabel="Career Objective"
+          multiline
+          rows={4}
+        />
       </Grid>
       <Grid size={6}>
-        <Typography variant="h6" >
-        Work Experience
-          </Typography>
+        <Typography variant="h6">Work Experience</Typography>
       </Grid>
       <Grid size={3}>
         <Button
-          onClick={() => append({ company: '', description: '', title: '', endDate: '', startDate: ''})}
+          onClick={() =>
+            append({
+              company: "",
+              description: "",
+              title: "",
+              endDate: "",
+              startDate: "",
+            })
+          }
           variant="contained"
           sx={{ width: 250 }}
         >
@@ -105,93 +153,66 @@ export default function ResumeForm() {
         </Button>
       </Grid>
       
-
       {fields.map((field, index) => {
+        console.log('fieldasdad: ', field);
         return (
           <Grid container size={12} key={index}>
-          <Grid size={4}>
-        <SimpleTextField control={control} name={`workExperience.${index}.title`} sx={{ width: 1}} variant="outlined" inputlabel="Job Title"/>
-      </Grid>
-      <Grid size={4}>
-        
-        <SimpleTextField control={control} name={`workExperience.${index}.company`} sx={{ width: 1}} variant="outlined" inputlabel="Company"/>
-      </Grid>
-      <Grid size={4}>
-        <SimpleTextField control={control} name={`workExperience.${index}.description`} sx={{ width: 1}} variant="outlined" inputlabel="Description"/>
-      </Grid>
-      <Grid size={4}>
-         {/* <DatePicker
-        label="Start Date"
-        value={date}
-        onChange={(newValue) => setDate(newValue)}
-        onError={(e) => console.log("Date error:", e)}
-        slots={{ textField: TextField }}  // v6+ replacement for renderInput
-      /> */}
-
-      </Grid>
-      <Grid size={4}>
-       
-        <DateTimePicker
-              open={openDate}
-              onClose={() => setOpenDate(false)}
-              value={
-                watch(`workExperience.${index}.startDate`) ? dayjs(watch(`workExperience.${index}.startDate`)) : null
-              }
-              onChange={(newValue: Dayjs | null) => {
-                if (newValue) {
-                  setValue(`workExperience.${index}.startDate`, newValue.toDate());
-                  trigger(`workExperience.${index}.startDate`);
-                }
-              }}
-              minDateTime={dayjs()}
-              slots={{
-                openPickerIcon: () => null,
-              }}
-              slotProps={{
-                textField: {
-                  size: "small",
-                  id: "workExperience",
-                  fullWidth: true,
-                  error: !!errors.workExperience?.index.startDate,
-                  helperText: errors.workExperience?.index.startDate?.message,
-                  placeholder: "Select Pickup Date/Time",
-                  InputProps: {
-                    startAdornment: (
-                      <InputAdornment
-                        onClick={() => setOpenDate(true)}
-                        position="start"
-                        sx={{ cursor: "pointer" }}
-                      >
-                        <CalendarIcon fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  },
-                  sx: {
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderRadius: "8px",
-                    },
-                  },
-                },
-              }}
-            />
-
-      </Grid>
+            <Grid size={4}>
+              <SimpleTextField
+                control={control}
+                name={`workExperience.${index}.title`}
+                sx={{ width: 1 }}
+                variant="outlined"
+                inputlabel="Job Title"
+              />
+            </Grid>
+            <Grid size={4}>
+              <SimpleTextField
+                control={control}
+                name={`workExperience.${index}.company`}
+                sx={{ width: 1 }}
+                variant="outlined"
+                inputlabel="Company"
+              />
+            </Grid>
+            <Grid size={4}>
+              <SimpleTextField
+                control={control}
+                name={`workExperience.${index}.description`}
+                sx={{ width: 1 }}
+                variant="outlined"
+                inputlabel="Description"
+              />
+            </Grid>
+            <Grid size={2}>
+              <RHFDateField
+                control={control}
+                name={`workExperience.${index}.startDate`}
+                label="Start Date"
+                placeholder="Select start date"
+                size="small"
+                format="LL"
+                disableFuture
+              />
+            </Grid>
+            <Grid size={2}>
+              <RHFDateField
+                control={control}
+                name={`workExperience.${index}.endDate`}
+                label="end Date"
+                placeholder="Select end date"
+                format="LL"
+                size="small"
+                disableFuture
+              />
+            </Grid>
           </Grid>
-        )
+        );
       })}
-      {/* <Grid size={4}>
-        <SimpleTextField control={control} name='careerObjective' sx={{ width: 1}} variant="outlined" inputlabel="Career Objective" multiline rows={4}/>
-      </Grid> */}
-
-      {
-      }
+      {/* <WorkExperienceFields fields={fields} control={control} /> */}
 
       <Grid size={12} gap={3} justifyItems={"center"} textAlign={"center"}>
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{ width: 250 }}
-        >
+        <Button type="submit" variant="contained" sx={{ width: 250 }}>
           Submit
         </Button>
         <Button
@@ -203,34 +224,7 @@ export default function ResumeForm() {
           Clear
         </Button>
       </Grid>
+      <DevTool control={control} />
     </Grid>
   );
 }
-
-
-// export interface Props { 
-//   fields: string[]
-// }
-// function GetFieldWorkExperience({ fields} : Props) { 
-
-//   return (
-//     <Grid container >
-//         <Grid size={4}>
-//         <SimpleTextField control={control} name='candidateName' sx={{ width: 1}} variant="outlined" inputlabel="candidate Name"/>
-//       </Grid>
-//       <Grid size={4}>
-        
-//         <SimpleTextField control={control} name='candidateEmail' sx={{ width: 1}} variant="outlined" inputlabel="candidate Email"/>
-//       </Grid>
-//       <Grid size={4}>
-        
-//         <SimpleTextField control={control} name='candidatePhone' sx={{ width: 1}} variant="outlined" inputlabel="candidate Phone"/>
-//       </Grid>
-
-//       <Grid size={12}>
-//         <SimpleTextField control={control} name='careerObjective' sx={{ width: 1}} variant="outlined" inputlabel="Career Objective" multiline rows={4}/>
-//       </Grid>
-//     </Grid>
-//   )
-
-// }
