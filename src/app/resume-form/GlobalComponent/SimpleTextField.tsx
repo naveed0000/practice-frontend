@@ -10,7 +10,7 @@ export interface Props<T extends FieldValues>
   extends Omit<TextFieldProps, 'name' | 'defaultValue'> { 
     control: Control<T>
     name: Path<T>; 
-    sx: SxProps<Theme>;
+    sx?: SxProps<Theme>;
     inputlabel: string; 
 }
 
