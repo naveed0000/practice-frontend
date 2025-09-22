@@ -1,4 +1,20 @@
+// ------------------------ Todo ------------------------
+export type Todo = {
+  _id: string;
+  title: string;
+  description: string;
+  isDone: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
 
+// If your API wraps todos in a "data" array
+export type TodoResponse = {
+  data: Todo[];
+};
+
+// ------------------------ Avatar ------------------------
 // Avatar type
 export type Avatar = {
   url: string;
@@ -27,8 +43,8 @@ export type RegisterData = {
   refreshToken: string;
 };
 export type LoginData = {
-    username: string; 
-    password: string; 
+  username: string;
+  password: string;
 };
 // Generic API response type
 export type ApiResponse<T> = {

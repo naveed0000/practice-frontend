@@ -6,6 +6,7 @@ import "./globals.css";
 
 import { Roboto } from "next/font/google";
 import theme from "@/theme/theme";
+import SnakberProvider from "./todo-app/context";
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
@@ -39,7 +40,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AppRouterCacheProvider options={{ key: "css", enableCssLayer: true }}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <SnakberProvider>{children}</SnakberProvider>
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>

@@ -65,3 +65,78 @@ practice-frontend
 └─ tsconfig.json
 
 ```
+```
+practice-frontend
+├─ eslint.config.mjs
+├─ next.config.ts
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.mjs
+├─ public
+│  ├─ file.svg
+│  ├─ globe.svg
+│  ├─ next.svg
+│  ├─ vercel.svg
+│  └─ window.svg
+├─ README.md
+├─ src
+│  ├─ app
+│  │  ├─ actions
+│  │  │  └─ Todo.ts
+│  │  ├─ favicon.ico
+│  │  ├─ globals.css
+│  │  ├─ layout.tsx
+│  │  ├─ page.tsx
+│  │  ├─ resume-form
+│  │  │  ├─ components
+│  │  │  │  ├─ Index.tsx
+│  │  │  │  ├─ RequirementSection.tsx
+│  │  │  │  ├─ ResumeForm.tsx
+│  │  │  │  ├─ ResumeFormProvider.tsx
+│  │  │  │  ├─ resumeSchema.ts
+│  │  │  │  ├─ RHFDateField.tsx
+│  │  │  │  ├─ RHFDateTimePicker.tsx
+│  │  │  │  ├─ WorkExperienceFields.tsx
+│  │  │  │  └─ WorkExperienceSection.tsx
+│  │  │  ├─ GlobalComponent
+│  │  │  │  └─ SimpleTextField.tsx
+│  │  │  ├─ layout.tsx
+│  │  │  └─ page.tsx
+│  │  ├─ todo-app
+│  │  │  ├─ (auth)
+│  │  │  │  ├─ login
+│  │  │  │  │  ├─ page.tsx
+│  │  │  │  │  └─ _components
+│  │  │  │  │     └─ Index.tsx
+│  │  │  │  └─ register
+│  │  │  │     ├─ page.tsx
+│  │  │  │     └─ _components
+│  │  │  │        └─ Index.tsx
+│  │  │  ├─ context
+│  │  │  │  ├─ index.tsx
+│  │  │  │  └─ useSnakberContext.ts
+│  │  │  ├─ dashboard
+│  │  │  │  ├─ page.tsx
+│  │  │  │  └─ _components
+│  │  │  │     └─ Index.tsx
+│  │  │  ├─ layout.tsx
+│  │  │  ├─ page.tsx
+│  │  │  ├─ reducers
+│  │  │  │  └─ snakebarReducer.ts
+│  │  │  ├─ types
+│  │  │  │  ├─ action.ts
+│  │  │  │  └─ appContext.ts
+│  │  │  └─ utils
+│  │  │     └─ token.ts
+│  │  └─ try-animation
+│  │     ├─ components
+│  │     │  ├─ CryptoPriceCard.tsx
+│  │     │  ├─ Gpt.tsx
+│  │     │  ├─ Index.tsx
+│  │     │  └─ SimpleCard.tsx
+│  │     └─ page.tsx
+│  └─ theme
+│     └─ theme.ts
+└─ tsconfig.json
+
+```

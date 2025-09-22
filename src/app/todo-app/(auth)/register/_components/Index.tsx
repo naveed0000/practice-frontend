@@ -15,6 +15,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SimpleTextField from "@/app/resume-form/GlobalComponent/SimpleTextField";
 import registerUserAction from "@/app/actions/Todo";
+import { useRouter } from "next/navigation";
+import useSnakberContext from "@/app/todo-app/context/useSnakberContext";
+import { AppActionType } from "@/app/todo-app/types/appContext";
 
 // ✅ Validation schema
 const registerSchema = z.object({
@@ -29,6 +32,9 @@ export type RegisterFormData = z.infer<typeof registerSchema>;
 const roles: RegisterFormData["role"][] = ["ADMIN", "USER"];
 
 export default function Index() {
+  const { dispatch } = useSnakberContext();
+
+  const router = useRouter();
   const {
     control,
     handleSubmit,
@@ -46,10 +52,28 @@ export default function Index() {
   const onSubmit = async (data: RegisterFormData) => {
     console.log("✅ Submitted Data:", data);
     // 🔗 Call your API here
-    const  res = await registerUserAction(data); 
-    console.log('res: ', res);
+    const res = await registerUserAction(data);
+    if (res?.success && res?.data) {
+      console.log("res: ", res);
+      dispatch({
+        type: AppActionType.ADD_ALERT,
+        payload: {
+          type: "success", // "success" | "error" | "warning" | "info"
+          message: "Data saved successfully 🎉",
+        },
+      });
+      router.push("/todo-app/dashboard");
+    }
   };
-
+  // const showSuccess = () => {
+  //   dispatch({
+  //     type: AppActionType.ADD_ALERT,
+  //     payload: {
+  //       type: "success", // "success" | "error" | "warning" | "info"
+  //       message: "Data saved successfully 🎉",
+  //     },
+  //   });
+  // };
   return (
     <Box
       display="flex"
@@ -65,9 +89,24 @@ export default function Index() {
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Username */}
-            <SimpleTextField  control={control} inputlabel="Username" name="username" fullWidth  />
-            <SimpleTextField  control={control} inputlabel="user email" name="email"  fullWidth/>
-            <SimpleTextField  control={control} inputlabel="user password" name="password" fullWidth  />
+            <SimpleTextField
+              control={control}
+              inputlabel="Username"
+              name="username"
+              fullWidth
+            />
+            <SimpleTextField
+              control={control}
+              inputlabel="user email"
+              name="email"
+              fullWidth
+            />
+            <SimpleTextField
+              control={control}
+              inputlabel="user password"
+              name="password"
+              fullWidth
+            />
 
             {/* Role */}
             <Controller
