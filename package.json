@@ -20,13 +20,14 @@
     "@mui/x-date-pickers": "^8.11.2",
     "dayjs": "^1.11.18",
     "jsonwebtoken": "^9.0.2",
+    "libphonenumber-js": "^1.12.23",
     "motion": "^12.23.12",
     "next": "15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.62.0",
     "styled-components": "^6.1.19",
-    "zod": "^4.1.5"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
